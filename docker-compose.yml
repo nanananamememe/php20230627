@@ -16,4 +16,22 @@ services:
     tty: true
     volumes:
       - ./:/var/www
-    working_dir: /var/www
+    working_dir: /var/www/example
+  mysql:
+      image: mysql
+      volumes:
+          - ./docker/mysql/conf.d:/etc/mysql/conf.d
+          - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+          - mysql:/var/lib/mysql
+      environment:
+          MYSQL_USER: sa
+          MYSQL_PASSWORD: test_secret
+          MYSQL_ROOT_PASSWORD: test_secret
+          MYSQL_DATABASE: test_db
+          TZ: Asia/Tokyo
+      command: --innodb-use-native-aio=0
+
+volumes:
+    mysql:
+        external: true
+
