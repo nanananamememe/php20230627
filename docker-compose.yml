@@ -16,22 +16,36 @@ services:
     tty: true
     volumes:
       - ./:/var/www
-    working_dir: /var/www/example
+    working_dir: /var/www
   mysql:
-      image: mysql
-      volumes:
-          - ./docker/mysql/conf.d:/etc/mysql/conf.d
-          - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
-          - mysql:/var/lib/mysql
-      environment:
-          MYSQL_USER: sa
-          MYSQL_PASSWORD: test_secret
-          MYSQL_ROOT_PASSWORD: test_secret
-          MYSQL_DATABASE: test_db
-          TZ: Asia/Tokyo
-      command: --innodb-use-native-aio=0
-
+    image: mysql
+    volumes:
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d
+      - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: test_secret
+      MYSQL_ROOT_PASSWORD: test_secret
+      MYSQL_DATABASE: test_db
+      TZ: Asia/Tokyo
+    command: --innodb-use-native-aio=0
+  redis:
+    image: redis
+    volumes:
+      - redis:/data
+  minio:
+    image: minio/minio
+    volumes:
+      - minio:/export
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: password
+    command: server /data
 volumes:
     mysql:
         external: true
-
+    redis:
+        external: true
+    minio:
+        external: true
