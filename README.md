@@ -14,3 +14,11 @@ $ docker-compose restart
 ``` bash
 $ docker-compose exec app chmod 777 example-pj/storage;
 ```
+
+
+``` bash
+$ docker-compose exec app bash
+# docker-php-ext-install pdo_mysql
+# php example-pj/artisan migrate
+# php example-jp/artisan db:seed
+```
